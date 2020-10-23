@@ -1,9 +1,7 @@
 import React, { useState, useEffect } from "react";
-
 import Hero from '../Hero'
 import Container from '../Container'
 import Table from '../Table'
-import Employees from '../Employees'
 import API from "../../utils/API";
 import TableItem from "../TableItem";
 
@@ -48,7 +46,7 @@ function Home() {
                 />
             ))}
         />
-        <Employees/>
+        
     </Container>
   </>
 );
