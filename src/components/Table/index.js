@@ -12,14 +12,9 @@ function Table(props) {
           <th scope="col">Email</th>
         </tr>
       </thead>
+      
       <tbody>
-        <tr>
-          <td>{props.image}</td>
-          <td>{props.name}</td>
-          <td>{props.phone}</td>
-          <td>{props.email}</td>
-        </tr>
-        
+        {props.child}
       </tbody>
     </table>
   );
