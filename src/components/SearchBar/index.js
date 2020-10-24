@@ -9,11 +9,11 @@ function SearchBar(props) {
             <input
               value={props.search}
               onChange={props.handleInputChange}
-              name="term"
+              name="search"
               type="text"
               className="form-control"
               placeholder="Type in a search term to begin"
-              id="term"
+              id="search"
             />
             
           </div>

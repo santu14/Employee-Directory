@@ -19,15 +19,21 @@ function Home() {
 
   const handleInputChange = (event) => {
     setSearch(event.target.value);
-    console.log(search);
     filterResults();
+    console.log(search);
+    
   };
+
   const filterResults = () => {
     setSearchResults(
       results.filter((employee) => {
         return (
           employee.name.first.toLowerCase().includes(search) ||
-          employee.name.last.toLowerCase().includes(search)
+          employee.name.last.toLowerCase().includes(search) ||
+          employee.email.toLowerCase().includes(search) ||
+          employee.cell.includes(search)
+
+
         );
       })
     );
@@ -56,14 +62,20 @@ function Home() {
       ));
     }
   };
+
   console.log(results);
   console.log(searchResults);
+
+
   return (
     <>
       <Hero>
         <h1>Employee Directory</h1>
       </Hero>
-      <SearchBar search={search} handleInputChange={handleInputChange} />
+      <SearchBar 
+        search={search} 
+        handleInputChange={handleInputChange} 
+      />
       <Container>
         <Table child={renderResults()} />
       </Container>
