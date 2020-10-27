@@ -4,6 +4,7 @@ import "./style.css";
 
 function SearchBar(props) {
     return (
+    
         <form className="search">
           <div className="form-group">
             <input
@@ -18,6 +19,8 @@ function SearchBar(props) {
             
           </div>
         </form>
+
+     
       );
 }
 

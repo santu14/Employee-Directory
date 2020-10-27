@@ -1,4 +1,5 @@
 import React from "react";
+import "./style.css";
 
 
 function TableItem(props) {
@@ -7,9 +8,9 @@ function TableItem(props) {
           <td>
               <img alt="img" src={props.image}></img>
               </td>
-          <td>{props.name}</td>
-          <td>{props.phone}</td>
-          <td>{props.email}</td>
+          <td className="text-td">{props.name}</td>
+          <td className="text-td">{props.phone}</td>
+          <td className="text-td">{props.email}</td>
         </tr>
   );
 }

@@ -10,6 +10,7 @@ function Home() {
   const [results, setResults] = useState([]);
   const [searchResults, setSearchResults] = useState([]);
   const [search, setSearch] = useState("");
+  const [caret, setCaret] = useState("up");
 
   useEffect(() => {
     API.getAll()
@@ -34,31 +35,34 @@ function Home() {
   }, [results, search])
 
   const handleInputChange = (event) => {
-    setSearch(event.target.value, ()=>{filterResults()} );
+    setSearch(event.target.value );
     
   };
-
-  const filterResults = () => {
-    setSearchResults(
-      results.filter((employee) => {
-        let name = `${employee.name.first} ${employee.name.last}`
-        return (
-          name.toLowerCase().includes(search) ||
-          employee.email.toLowerCase().includes(search) ||
-          employee.cell.includes(search)
-
-
-        );
-      })
-    );
-  };
+  const handleOnClick = event => {
+    if (caret === "up") {
+      setCaret("down");
+    } else {
+      setCaret("up");
+      sortAcending();
+    }
+  }
+  const sortAcending = () =>{
+    if (searchResults < 1 && search === "") {
+      setResults(results.sort())
+     } else {
+      setSearchResults(searchResults.sort())
+    }
+  }
+  const sortDecending = () =>{
+    
+  }
 
   const renderResults = () => {
     if (searchResults < 1 && search === "") {
       return results.map((employee) => (
         <TableItem
           key={employee.id.value}
-          image={employee.picture.thumbnail}
+          image={employee.picture.medium}
           name={employee.name.first + " " + employee.name.last}
           phone={employee.cell}
           email={employee.email}
@@ -69,7 +73,7 @@ function Home() {
       return searchResults.map((employee) => (
         <TableItem
           key={employee.id.value}
-          image={employee.picture.thumbnail}
+          image={employee.picture.medium}
           name={employee.name.first + " " + employee.name.last}
           phone={employee.cell}
           email={employee.email}
@@ -78,8 +82,7 @@ function Home() {
     }
   };
 
-  console.log(results);
-  console.log(searchResults);
+ 
 
 
   return (
@@ -92,7 +95,9 @@ function Home() {
         handleInputChange={handleInputChange} 
       />
       <Container>
-        <Table child={renderResults()} />
+        <Table caretDir={caret} handleOnClick={handleOnClick}>
+          {renderResults()}
+        </Table>
       </Container>
     </>
   );
