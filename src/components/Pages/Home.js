@@ -15,21 +15,35 @@ function Home() {
     API.getAll()
       .then((res) => setResults(res.data.results))
       .catch((err) => console.log(err));
+    
   }, []);
 
+  useEffect(() => {
+    setSearchResults(
+      results.filter((employee) => {
+        let name = `${employee.name.first} ${employee.name.last}`
+        return (
+          name.toLowerCase().includes(search) ||
+          employee.email.toLowerCase().includes(search) ||
+          employee.cell.includes(search)
+
+
+        );
+      })
+    );
+  }, [results, search])
+
   const handleInputChange = (event) => {
-    setSearch(event.target.value);
-    filterResults();
-    console.log(search);
+    setSearch(event.target.value, ()=>{filterResults()} );
     
   };
 
   const filterResults = () => {
     setSearchResults(
       results.filter((employee) => {
+        let name = `${employee.name.first} ${employee.name.last}`
         return (
-          employee.name.first.toLowerCase().includes(search) ||
-          employee.name.last.toLowerCase().includes(search) ||
+          name.toLowerCase().includes(search) ||
           employee.email.toLowerCase().includes(search) ||
           employee.cell.includes(search)
 
@@ -40,7 +54,7 @@ function Home() {
   };
 
   const renderResults = () => {
-    if (searchResults < 1) {
+    if (searchResults < 1 && search === "") {
       return results.map((employee) => (
         <TableItem
           key={employee.id.value}
@@ -51,6 +65,7 @@ function Home() {
         />
       ));
     } else {
+      
       return searchResults.map((employee) => (
         <TableItem
           key={employee.id.value}
