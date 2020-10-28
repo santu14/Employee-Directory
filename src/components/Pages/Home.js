@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react";
-import Hero from "../Hero";
 import Container from "../Container";
 import Table from "../Table";
 import API from "../../utils/API";
@@ -16,46 +15,52 @@ function Home() {
     API.getAll()
       .then((res) => setResults(res.data.results))
       .catch((err) => console.log(err));
-    
   }, []);
 
   useEffect(() => {
     setSearchResults(
       results.filter((employee) => {
-        let name = `${employee.name.first} ${employee.name.last}`
+        let name = `${employee.name.first} ${employee.name.last}`;
         return (
           name.toLowerCase().includes(search) ||
           employee.email.toLowerCase().includes(search) ||
           employee.cell.includes(search)
-
-
         );
       })
     );
-  }, [results, search])
+  }, [results, search]);
 
   const handleInputChange = (event) => {
-    setSearch(event.target.value );
-    
+    setSearch(event.target.value);
   };
-  const handleOnClick = event => {
-    if (caret === "up") {
-      setCaret("down");
-    } else {
+  const handleOnClick = () => {
+    if (caret === "down") {
       setCaret("up");
+      sortDecending();
+    } else {
+      setCaret("down");
       sortAcending();
     }
-  }
-  const sortAcending = () =>{
+  };
+  const sortAcending = () => {
     if (searchResults < 1 && search === "") {
-      setResults(results.sort())
-     } else {
-      setSearchResults(searchResults.sort())
+      setResults(results.sort((a, b) => (a.name.last > b.name.last ? 1 : -1)));
+    } else {
+      setSearchResults(
+        searchResults.sort((a, b) => (a.name.last > b.name.last ? 1 : -1))
+      );
     }
-  }
-  const sortDecending = () =>{
-    
-  }
+  };
+
+  const sortDecending = () => {
+    if (searchResults < 1 && search === "") {
+      setResults(results.sort((a, b) => (a.name.last < b.name.last ? 1 : -1)));
+    } else {
+      setSearchResults(
+        searchResults.sort((a, b) => (a.name.last < b.name.last ? 1 : -1))
+      );
+    }
+  };
 
   const renderResults = () => {
     if (searchResults < 1 && search === "") {
@@ -69,7 +74,6 @@ function Home() {
         />
       ));
     } else {
-      
       return searchResults.map((employee) => (
         <TableItem
           key={employee.id.value}
@@ -82,18 +86,9 @@ function Home() {
     }
   };
 
- 
-
-
   return (
     <>
-      <Hero>
-        <h1>Employee Directory</h1>
-      </Hero>
-      <SearchBar 
-        search={search} 
-        handleInputChange={handleInputChange} 
-      />
+      <SearchBar search={search} handleInputChange={handleInputChange} />
       <Container>
         <Table caretDir={caret} handleOnClick={handleOnClick}>
           {renderResults()}
