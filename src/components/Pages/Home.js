@@ -6,17 +6,20 @@ import TableItem from "../TableItem";
 import SearchBar from "../SearchBar";
 
 function Home() {
+  // Set up our stateful components
   const [results, setResults] = useState([]);
   const [searchResults, setSearchResults] = useState([]);
   const [search, setSearch] = useState("");
   const [caret, setCaret] = useState("up");
 
+ // Retreive our employee list from our api
   useEffect(() => {
     API.getAll()
       .then((res) => setResults(res.data.results))
       .catch((err) => console.log(err));
   }, []);
 
+  // Filter through our results for those that match our search component
   useEffect(() => {
     setSearchResults(
       results.filter((employee) => {
@@ -30,9 +33,12 @@ function Home() {
     );
   }, [results, search]);
 
+  // take in search results on input change
   const handleInputChange = (event) => {
     setSearch(event.target.value);
   };
+
+  // Run our Sorting functions and change direction of caret on click
   const handleOnClick = () => {
     if (caret === "down") {
       setCaret("up");
@@ -42,48 +48,17 @@ function Home() {
       sortAcending();
     }
   };
+  
+  // Sorting functions
   const sortAcending = () => {
-    if (searchResults < 1 && search === "") {
-      setResults(results.sort((a, b) => (a.name.last > b.name.last ? 1 : -1)));
-    } else {
-      setSearchResults(
-        searchResults.sort((a, b) => (a.name.last > b.name.last ? 1 : -1))
-      );
-    }
+    setSearchResults(
+      searchResults.sort((a, b) => (a.name.last > b.name.last ? 1 : -1))
+    );
   };
-
   const sortDecending = () => {
-    if (searchResults < 1 && search === "") {
-      setResults(results.sort((a, b) => (a.name.last < b.name.last ? 1 : -1)));
-    } else {
-      setSearchResults(
-        searchResults.sort((a, b) => (a.name.last < b.name.last ? 1 : -1))
-      );
-    }
-  };
-
-  const renderResults = () => {
-    if (searchResults < 1 && search === "") {
-      return results.map((employee) => (
-        <TableItem
-          key={employee.id.value}
-          image={employee.picture.medium}
-          name={employee.name.first + " " + employee.name.last}
-          phone={employee.cell}
-          email={employee.email}
-        />
-      ));
-    } else {
-      return searchResults.map((employee) => (
-        <TableItem
-          key={employee.id.value}
-          image={employee.picture.medium}
-          name={employee.name.first + " " + employee.name.last}
-          phone={employee.cell}
-          email={employee.email}
-        />
-      ));
-    }
+    setSearchResults(
+      searchResults.sort((a, b) => (a.name.last < b.name.last ? 1 : -1))
+    );
   };
 
   return (
@@ -91,7 +66,15 @@ function Home() {
       <SearchBar search={search} handleInputChange={handleInputChange} />
       <Container>
         <Table caretDir={caret} handleOnClick={handleOnClick}>
-          {renderResults()}
+          {searchResults.map((employee) => (
+            <TableItem
+              key={employee.id.value}
+              image={employee.picture.medium}
+              name={employee.name.first + " " + employee.name.last}
+              phone={employee.cell}
+              email={employee.email}
+            />
+          ))}
         </Table>
       </Container>
     </>
