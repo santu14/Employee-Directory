@@ -25,7 +25,7 @@ Application does not require Installation for use. If looking to update or rewor
 # Contributing
 Feel free to update or refactor application as you please. There are no guidelines for contributing.
 # Test
-No testing needed or used in this application.
+No testing used in this application.
 # Questions
 If you have any questions or would like to contact me feel free to reach me at:
 - Email: santiago.sjs@gmail.com
